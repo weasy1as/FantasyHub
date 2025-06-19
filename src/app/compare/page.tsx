@@ -96,13 +96,15 @@ const ComparePage = () => {
 
       {player1 && player2 && (
         <div className="text-center">
-          <button
-            onClick={handleGetInsight}
-            className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 disabled:opacity-50"
-            disabled={loadingInsight}
-          >
-            {loadingInsight ? "Generating Insight..." : "Get AI Insight"}
-          </button>
+          {insight == null && (
+            <button
+              onClick={handleGetInsight}
+              className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 disabled:opacity-50"
+              disabled={loadingInsight}
+            >
+              {loadingInsight ? "Generating Insight..." : "Get AI Insight"}
+            </button>
+          )}
         </div>
       )}
 

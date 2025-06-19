@@ -62,6 +62,9 @@ export async function POST(req: NextRequest) {
     }
 
     const data = await openaiRes.json();
+    console.log("Prompt tokens:", data.usage.prompt_tokens);
+    console.log("Completion tokens:", data.usage.completion_tokens);
+    console.log("Total tokens:", data.usage.total_tokens);
     const insight = data.choices?.[0]?.message?.content;
 
     return NextResponse.json({ insight });
