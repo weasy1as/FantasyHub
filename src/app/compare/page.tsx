@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import CompareCard from "@/components/compareCard";
-import PlayerPage from "@/components/PlayerPage";
 import PlayerSearch from "@/components/PlayerSearch";
 
 const getPlayer = async (id: string) => {
@@ -17,9 +16,20 @@ const getPlayer = async (id: string) => {
 };
 
 // Simulated AI call - replace with actual API call later
-const fetchAIInsight = async (player1Name: string, player2Name: string) => {
-  await new Promise((r) => setTimeout(r, 1500));
-  return `Insight: ${player1Name} vs ${player2Name} – Based on form and stats, ${player1Name} may have an edge in attacking potential.`;
+const fetchAIInsight = async (player1, player2) => {
+  const res = await fetch("/api/getComparison", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      player1Name: player1.name,
+      player2Name: player2.name,
+      player2Stats: player2.player_stats,
+      player1Stats: player1.player_stats,
+    }),
+  });
+
+  const data = await res.json();
+  return data.insight;
 };
 
 const ComparePage = () => {
@@ -49,7 +59,7 @@ const ComparePage = () => {
   const handleGetInsight = async () => {
     if (!player1 || !player2) return;
     setLoadingInsight(true);
-    const result = await fetchAIInsight(player1.name, player2.name);
+    const result = await fetchAIInsight(player1, player2);
     setInsight(result);
     setLoadingInsight(false);
   };

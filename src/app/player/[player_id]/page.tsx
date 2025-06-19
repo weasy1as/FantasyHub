@@ -16,11 +16,18 @@ const getPlayer = async (id: string) => {
 };
 
 // Simulated AI call - replace with your real API integration
-const fetchAIInsight = async (playerName: string) => {
-  const defaultPrompt = `Provide a concise insight about the player ${playerName}, including whether users should buy, shortlist, or avoid this player based on recent performance and stats.`;
-  await new Promise((r) => setTimeout(r, 1500)); // simulate delay
-  // Return a mocked insight (replace with your real AI response)
-  return `AI insight for ${playerName}: Based on recent stats and form, it's recommended to consider buying if budget allows.`;
+const fetchAIInsight = async (player) => {
+  const res = await fetch("/api/getInsight", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      playerName: player.name,
+      playerStats: player.player_stats,
+    }),
+  });
+
+  const data = await res.json();
+  return data.insight;
 };
 
 const PlayerStatsPage = () => {
@@ -43,7 +50,7 @@ const PlayerStatsPage = () => {
   const handleGetInsight = async () => {
     if (!player) return;
     setLoadingInsight(true);
-    const result = await fetchAIInsight(player.name);
+    const result = await fetchAIInsight(player);
     setInsight(result);
     setLoadingInsight(false);
   };
