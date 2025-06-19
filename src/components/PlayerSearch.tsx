@@ -3,9 +3,24 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-const PlayerSearch = () => {
+interface Player {
+  player_id: number;
+  name: string;
+  team: string;
+  position: string;
+}
+
+interface PlayerSearchProps {
+  onSelect?: (player: Player) => void;
+  placeholder?: string;
+}
+
+const PlayerSearch: React.FC<PlayerSearchProps> = ({
+  onSelect,
+  placeholder,
+}) => {
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState<Player[]>([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const router = useRouter();
 
@@ -30,19 +45,26 @@ const PlayerSearch = () => {
     return () => clearTimeout(delayDebounce);
   }, [query]);
 
-  const handleSelect = (player) => {
-    router.push(`/player/${player.player_id}`);
+  const handleSelect = (player: Player) => {
+    if (onSelect) {
+      onSelect(player);
+    } else {
+      router.push(`/player/${player.player_id}`);
+    }
     setShowDropdown(false);
     setQuery("");
   };
 
   return (
-    <div className="relative max-w-md w-full mx-auto mt-8">
+    <div className="relative w-full">
       <input
         type="text"
-        placeholder="Search for a player..."
+        placeholder={placeholder || "Search for a player..."}
         value={query}
-        onChange={(e) => setQuery(e.target.value)}
+        onChange={(e) => {
+          setQuery(e.target.value);
+          setShowDropdown(true);
+        }}
         className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:border-blue-400"
       />
 
