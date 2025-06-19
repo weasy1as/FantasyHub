@@ -1,7 +1,32 @@
 import Image from "next/image";
 import PlayerSearch from "@/components/PlayerSearch";
+import Stats from "@/components/Stats";
 
-export default function Home() {
+interface StatItem {
+  player_id: number;
+  element: number;
+  name: string;
+  assists?: number;
+  goals_scored?: number;
+  clean_sheets?: number;
+  team?: string;
+}
+
+async function getStatsData() {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/stats`, {
+    cache: "no-store",
+  });
+  if (!res.ok) throw new Error("Failed to fetch stats");
+  return res.json() as Promise<{
+    topAssists: StatItem[];
+    topGoals: StatItem[];
+    topCleanSheets: StatItem[];
+  }>;
+}
+
+export default async function Home() {
+  const { topAssists, topGoals, topCleanSheets } = await getStatsData();
+
   return (
     <div>
       <div className="md:flex items-center justify-between p-7">
@@ -25,8 +50,15 @@ export default function Home() {
       </div>
 
       {/* 🔍 Add Player Search Below Hero */}
-      <div className="mt-10 px-4">
+      <div className="my-10 px-4">
         <PlayerSearch />
+        <div className="mt-9">
+          <Stats
+            topAssists={topAssists}
+            topGoals={topGoals}
+            topCleanSheets={topCleanSheets}
+          />
+        </div>
       </div>
     </div>
   );

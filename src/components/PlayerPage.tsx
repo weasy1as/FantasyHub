@@ -37,7 +37,7 @@ const PlayerPage = ({
   const summaryStats = calculateSummaryStats(playerStats);
 
   return (
-    <div className="flex justify-center gap-6 py-6 ">
+    <div className="flex items-center lg:flex-row flex-col justify-center gap-6 py-9 lg:py-6 px-6  ">
       <div>
         <h1 className="text-2xl text-center font-bold mb-4">Player</h1>
 
@@ -99,10 +99,10 @@ const PlayerPage = ({
 
       {/* Player Stats */}
       <div>
-        <h1 className="text-2xl text-center font-sans font-bold mb-4">
+        <h1 className="text-2xl text-center font-sans font-bold my-4">
           Player Stats
         </h1>
-        <div className="max-h-[390px] overflow-y-auto grid grid-cols-2 gap-4">
+        <div className="p-4 max-h-[390px] overflow-y-auto grid md:grid-cols-2 gap-4">
           {playerStats.map((stat: any) => (
             <div
               key={stat.stat_id}

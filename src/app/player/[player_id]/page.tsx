@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import PlayerPage from "@/components/PlayerPage";
+import { useParams } from "next/navigation";
 
 const getPlayer = async (id: string) => {
   const res = await fetch(
@@ -22,20 +23,22 @@ const fetchAIInsight = async (playerName: string) => {
   return `AI insight for ${playerName}: Based on recent stats and form, it's recommended to consider buying if budget allows.`;
 };
 
-const PlayerStatsPage = ({ params }: { params: { player_id: string } }) => {
+const PlayerStatsPage = () => {
   const [player, setPlayer] = useState<any>(null);
   const [loadingPlayer, setLoadingPlayer] = useState(true);
   const [insight, setInsight] = useState<string | null>(null);
   const [loadingInsight, setLoadingInsight] = useState(false);
+  const params = useParams();
+  const playerId = params?.player_id;
 
   useEffect(() => {
-    getPlayer(params.player_id)
+    getPlayer(playerId)
       .then((data) => {
         setPlayer(data);
         setLoadingPlayer(false);
       })
       .catch(() => setLoadingPlayer(false));
-  }, [params.player_id]);
+  }, [playerId]);
 
   const handleGetInsight = async () => {
     if (!player) return;

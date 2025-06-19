@@ -21,7 +21,7 @@ model gameweeks {
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model merged_gw_summary {
-  element            Int?
+  element            Int      @id @default(autoincrement())
   name               String?
   position           String?
   team               String?
@@ -37,8 +37,6 @@ model merged_gw_summary {
   avg_xp             Decimal? @db.Decimal
   first_gw           Int?
   last_gw            Int?
-
-  @@ignore
 }
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
