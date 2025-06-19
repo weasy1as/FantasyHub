@@ -54,7 +54,7 @@ export default function TeamPage() {
   }, [team_id]);
 
   const handleSelect = (player) => {
-    Router.push(`/players/${player}`);
+    Router.push(`/player/${player}`);
   };
 
   if (!teamName) {
