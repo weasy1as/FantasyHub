@@ -1,10 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-  const { player1Name, player1Stats, player2Name, player2Stats } =
-    await req.json();
+  const {
+    player1Name,
+    player1Stats,
+    player2Name,
+    player2Stats,
+    summaryStats,
+    summaryStats2,
+  } = await req.json();
 
-  if (!player1Name || !player1Stats || !player2Name || !player2Stats) {
+  if (
+    !player1Name ||
+    !player1Stats ||
+    !player2Name ||
+    !player2Stats ||
+    !summaryStats ||
+    !summaryStats2
+  ) {
     return NextResponse.json({ error: "Missing player data" }, { status: 400 });
   }
 
@@ -25,15 +38,28 @@ export async function POST(req: NextRequest) {
   }
 
   const prompt = `
-    Compare the two fantasy football players below based on their recent performance and stats.
-    Provide a brief comparison and recommend which of the two players the user should buy.
+You are a Fantasy Premier League expert analyst.
 
-    Player 1: ${player1Name}
-    Stats: ${formatStats(player1Stats)}
+Below are two players with their recent match stats and season summary stats. 
+Your task is to:
 
-    Player 2: ${player2Name}
-    Stats:${formatStats(player2Stats)}
-  `;
+1. Compare their recent form based strictly on the provided data.
+2. Provide a clear, concise comparison of their performance.
+3. Recommend which player the user should buy, with a short explanation.
+4. Do NOT mention or infer anything beyond the stats provided here — no team history, transfers, or outside knowledge.
+
+Player 1: ${player1Name}
+Recent Match Stats:
+${formatStats(player1Stats)}
+Season Summary Stats:
+${summaryStats}
+
+Player 2: ${player2Name}
+Recent Match Stats:
+${formatStats(player2Stats)}
+Season Summary Stats:
+${summaryStats2}
+`;
 
   try {
     const openaiRes = await fetch(

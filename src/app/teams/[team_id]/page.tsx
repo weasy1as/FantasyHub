@@ -5,7 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 
 export default function TeamPage() {
   const { team_id } = useParams();
-  const Router = useRouter();
+  const router = useRouter();
   const [teamName, setTeamName] = useState<string | null>(null);
   const [groupedPlayers, setGroupedPlayers] = useState<Record<string, any[]>>(
     {}
@@ -14,7 +14,6 @@ export default function TeamPage() {
   useEffect(() => {
     const fetchTeamAndPlayers = async () => {
       try {
-        // Fetch all teams and find the matching team name
         const teamRes = await fetch("/api/teams");
         const allTeams = await teamRes.json();
 
@@ -26,20 +25,18 @@ export default function TeamPage() {
 
         setTeamName(matchedTeam.name);
 
-        // Fetch all players
         const playersRes = await fetch("/api/players");
         const allPlayers = await playersRes.json();
 
-        // Filter players by team name
         const teamPlayers = allPlayers.filter(
           (p: any) => p.team === matchedTeam.name
         );
 
         const grouped = {
-          Goalkeepers: teamPlayers.filter((p: any) => p.position === "GK"),
-          Defenders: teamPlayers.filter((p: any) => p.position === "DEF"),
-          Midfielders: teamPlayers.filter((p: any) => p.position === "MID"),
-          Forwards: teamPlayers.filter((p: any) => p.position === "FWD"),
+          Goalkeepers: teamPlayers.filter((p) => p.position === "GK"),
+          Defenders: teamPlayers.filter((p) => p.position === "DEF"),
+          Midfielders: teamPlayers.filter((p) => p.position === "MID"),
+          Forwards: teamPlayers.filter((p) => p.position === "FWD"),
         };
 
         setGroupedPlayers(grouped);
@@ -48,13 +45,11 @@ export default function TeamPage() {
       }
     };
 
-    if (team_id) {
-      fetchTeamAndPlayers();
-    }
+    if (team_id) fetchTeamAndPlayers();
   }, [team_id]);
 
-  const handleSelect = (player) => {
-    Router.push(`/player/${player}`);
+  const handleSelect = (playerId: number) => {
+    router.push(`/player/${playerId}`);
   };
 
   if (!teamName) {
@@ -62,23 +57,28 @@ export default function TeamPage() {
   }
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
-      <h1 className="text-3xl font-bold mb-4">{teamName}</h1>
+    <div className="px-6 py-8 max-w-6xl mx-auto">
+      <h1 className="text-4xl font-bold text-indigo-700 mb-10 text-center">
+        {teamName} Squad
+      </h1>
 
-      {Object.entries(groupedPlayers).map(([group, players]) => (
-        <div key={group} className="mb-6">
-          <h2 className="text-xl font-semibold mb-2">{group}</h2>
+      {Object.entries(groupedPlayers).map(([position, players]) => (
+        <div key={position} className="mb-12">
+          <h2 className="text-2xl font-semibold text-gray-800 mb-4 border-b pb-1">
+            {position}
+          </h2>
           {players.length === 0 ? (
             <p className="text-gray-500">No players in this position.</p>
           ) : (
-            <ul className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-              {players.map((player: any) => (
+            <ul className="grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+              {players.map((player) => (
                 <li
                   key={player.player_id}
                   onClick={() => handleSelect(player.player_id)}
-                  className="border rounded p-3 hover:bg-gray-100"
+                  className="cursor-pointer border bg-white p-4 rounded-xl shadow-sm hover:shadow-md hover:bg-gray-50 transition-all duration-200"
                 >
-                  {player.name}
+                  <p className="font-medium text-gray-800">{player.name}</p>
+                  <p className="text-sm text-gray-500">{player.position}</p>
                 </li>
               ))}
             </ul>

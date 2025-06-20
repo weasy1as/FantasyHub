@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import PlayerPage from "@/components/PlayerPage";
 import { useParams } from "next/navigation";
+import { calculateSummaryStats } from "@/lib/playerStats";
 
 const getPlayer = async (id: string) => {
   const res = await fetch(
@@ -15,21 +16,6 @@ const getPlayer = async (id: string) => {
   return res.json();
 };
 
-// Simulated AI call - replace with your real API integration
-const fetchAIInsight = async (player) => {
-  const res = await fetch("/api/getInsight", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      playerName: player.name,
-      playerStats: player.player_stats,
-    }),
-  });
-
-  const data = await res.json();
-  return data.insight;
-};
-
 const PlayerStatsPage = () => {
   const [player, setPlayer] = useState<any>(null);
   const [loadingPlayer, setLoadingPlayer] = useState(true);
@@ -37,6 +23,22 @@ const PlayerStatsPage = () => {
   const [loadingInsight, setLoadingInsight] = useState(false);
   const params = useParams();
   const playerId = params?.player_id;
+
+  const summaryStats = calculateSummaryStats(player?.player_stats);
+  const fetchAIInsight = async (player) => {
+    const res = await fetch("/api/getInsight", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        playerName: player.name,
+        playerStats: player.player_stats,
+        stats: summaryStats,
+      }),
+    });
+
+    const data = await res.json();
+    return data.insight;
+  };
 
   useEffect(() => {
     getPlayer(playerId)

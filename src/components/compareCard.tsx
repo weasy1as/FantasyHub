@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 import { FaUserAlt } from "react-icons/fa";
 
@@ -41,6 +42,12 @@ const compareCard = ({ player }: { player: any }) => {
               <p className="text-gray-500 text-sm">
                 {player.position} — {player.team}
               </p>
+              <Link
+                href={`/player/${player.player_id}`}
+                className="font-semibold font-sans text-sm text-indigo-800"
+              >
+                Go to player page
+              </Link>
             </div>
           </div>
         </div>
@@ -65,69 +72,6 @@ const compareCard = ({ player }: { player: any }) => {
               <strong>Assists:</strong> {summaryStats.assists}
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* Player Stats */}
-      <div>
-        <h1 className="text-2xl text-center font-sans font-bold my-4">
-          Player Stats
-        </h1>
-        <div className="p-4 max-h-[390px] overflow-y-auto grid  gap-4">
-          {playerStats.map((stat: any) => (
-            <div
-              key={stat.stat_id}
-              className="bg-white shadow-md rounded-2xl p-5 border"
-            >
-              <div className="flex justify-between items-center mb-2">
-                <div className="text-lg font-semibold">
-                  Gameweek {stat.gw_id}
-                </div>
-                <div className="text-sm text-gray-500">
-                  {new Date(stat.kickoff_time).toLocaleDateString()}
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm text-gray-700">
-                <div>
-                  <strong>Minutes:</strong> {stat.minutes}
-                </div>
-                <div>
-                  <strong>Points:</strong> {stat.total_points}
-                </div>
-                <div>
-                  <strong>Goals:</strong> {stat.goals_scored}
-                </div>
-                <div>
-                  <strong>Assists:</strong> {stat.assists}
-                </div>
-                <div>
-                  <strong>Clean Sheets:</strong> {stat.clean_sheets}
-                </div>
-                <div>
-                  <strong>BPS:</strong> {stat.bps}
-                </div>
-                <div>
-                  <strong>Creativity:</strong> {stat.creativity}
-                </div>
-                <div>
-                  <strong>Threat:</strong> {stat.threat}
-                </div>
-                <div>
-                  <strong>Influence:</strong> {stat.influence}
-                </div>
-                <div>
-                  <strong>xG:</strong> {stat.expected_goals}
-                </div>
-                <div>
-                  <strong>xA:</strong> {stat.expected_assists}
-                </div>
-                <div>
-                  <strong>ICT Index:</strong> {stat.ict_index}
-                </div>
-              </div>
-            </div>
-          ))}
         </div>
       </div>
     </div>

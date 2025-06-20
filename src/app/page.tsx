@@ -1,4 +1,3 @@
-import Image from "next/image";
 import PlayerSearch from "@/components/PlayerSearch";
 import Stats from "@/components/Stats";
 
@@ -28,38 +27,50 @@ export default async function Home() {
   const { topAssists, topGoals, topCleanSheets } = await getStatsData();
 
   return (
-    <div>
-      <div className="md:flex items-center justify-between p-7">
-        <div>
-          <h1 className="pl-9 font-bold text-[36px] max-w-[400px]">
-            Level up your fantasy team with FPL Analytics
+    <main className="bg-gray-50 min-h-screen">
+      {/* Hero Section */}
+      <section className="grid grid-cols-1 md:grid-cols-2 gap-8 p-8 items-center bg-gradient-to-br from-blue-50 to-white">
+        <div className="space-y-4">
+          <h1 className="text-4xl font-extrabold text-gray-800 leading-snug">
+            Level up your fantasy team with{" "}
+            <span className="text-indigo-600">FPL Analytics</span>
           </h1>
-          <p className="pl-9 font-bold text-[26px]">
+          <p className="text-lg text-gray-600">
             Every Goal, Assist, and Stat—All in One Place
           </p>
-          <p className="pl-9 font-bold text-[19px]">
+          <p className="text-md text-gray-500">
             Your Ultimate FPL Analytics Hub
           </p>
         </div>
+        <div className="flex justify-center">
+          <img
+            className="w-full max-w-md"
+            src="https://fantasy.premierleague.com/static/media/player-comp-5-2x.d02a3f06.png"
+            alt="FPL Player Graphic"
+          />
+        </div>
+      </section>
 
-        <img
-          className="w-[400px] sm:w-[500px]"
-          src="https://fantasy.premierleague.com/static/media/player-comp-5-2x.d02a3f06.png"
-          alt="FPL Player Graphic"
-        />
-      </div>
+      {/* Search Section */}
+      <section className="py-12 bg-white px-4">
+        <div className="max-w-xl mx-auto text-center">
+          <h2 className="text-2xl font-bold mb-6 text-gray-800">
+            Search for Your Favorite Players
+          </h2>
+          <PlayerSearch />
+        </div>
+      </section>
 
-      {/* 🔍 Add Player Search Below Hero */}
-      <div className="my-10 px-4">
-        <PlayerSearch />
-        <div className="mt-9">
+      {/* Stats Section */}
+      <section className="py-12 bg-gray-100 px-4">
+        <div className="max-w-7xl mx-auto">
           <Stats
             topAssists={topAssists}
             topGoals={topGoals}
             topCleanSheets={topCleanSheets}
           />
         </div>
-      </div>
-    </div>
+      </section>
+    </main>
   );
 }

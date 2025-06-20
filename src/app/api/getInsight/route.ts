@@ -1,10 +1,47 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-  const { playerName, playerStats } = await req.json();
+  const { playerName, playerStats, statsOverall } = await req.json();
 
-  const prompt = `Give a brief insight about ${playerName}, including whether a fantasy user should buy, avoid, or shortlist them based on their performance in the last five gameweeks and overall. Use the following data: ${playerStats}.`;
+  function formatStats(stats: any[]) {
+    const sortedStats = [...stats].sort(
+      (a, b) =>
+        new Date(a.kickoff_time).getTime() - new Date(b.kickoff_time).getTime()
+    );
 
+    return sortedStats
+      .slice(-5) // last 5 gameweeks
+      .map((s, i) => {
+        return `Gameweek ${s.gw_id}:
+        Minutes: ${s.minutes}, 
+        Points: ${s.total_points}, 
+        Goals: ${s.goals_scored}, 
+        Assists: ${s.assists}, 
+        Clean Sheets: ${s.clean_sheets || 0}, 
+        xG: ${s.expected_goals}, 
+        xA: ${s.expected_assists}`;
+      })
+      .join("\n\n");
+  }
+
+  const prompt = `
+You are a Fantasy Premier League expert.
+
+Based on the following current-season stats for the player "${playerName}", provide a short but insightful summary (2–4 sentences). 
+Your analysis should cover:
+
+1. Their recent form (last 5 gameweeks)
+2. Their overall season performance
+3. A recommendation: Buy, Avoid, or Shortlist (with reasoning)
+
+Player Data:
+${formatStats(playerStats)}
+
+Player season stats so far:
+${JSON.stringify(statsOverall)}
+
+Only use the stats provided. Do not mention any team history or past seasons.
+`;
   try {
     const openaiRes = await fetch(
       "https://api.openai.com/v1/chat/completions",
