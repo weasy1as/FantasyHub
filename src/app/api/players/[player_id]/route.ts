@@ -6,7 +6,7 @@ export async function GET(
   req: NextRequest,
   context: { params: { player_id: string } }
 ) {
-  const { player_id } = context.params;
+  const { player_id } = await context.params;
   const id = Number(player_id);
 
   if (isNaN(id)) {

@@ -1,3 +1,4 @@
+import { player_stats } from "@/generated/prisma";
 import React from "react";
 import { FaUserAlt } from "react-icons/fa";
 
@@ -7,6 +8,14 @@ interface PlayerPageProps {
   onGetInsight: () => void;
   loadingInsight: boolean;
 }
+
+type SummaryStats = {
+  minutes: number;
+  total_points: number;
+  goals_scored: number;
+  assists: number;
+  clean_sheets: number;
+};
 
 const PlayerPage: React.FC<PlayerPageProps> = ({
   player,
@@ -18,7 +27,7 @@ const PlayerPage: React.FC<PlayerPageProps> = ({
 
   const calculateSummaryStats = (stats: typeof player.player_stats) => {
     return stats.reduce(
-      (acc, stat) => ({
+      (acc: SummaryStats, stat: player_stats) => ({
         minutes: acc.minutes + (stat.minutes || 0),
         total_points: acc.total_points + (stat.total_points || 0),
         goals_scored: acc.goals_scored + (stat.goals_scored || 0),

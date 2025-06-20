@@ -1,3 +1,4 @@
+import { player_stats } from "@/generated/prisma";
 import Link from "next/link";
 import React from "react";
 import { FaUserAlt } from "react-icons/fa";
@@ -14,7 +15,7 @@ const compareCard = ({ player }: { player: any }) => {
       clean_sheets: 0,
     };
 
-    stats.forEach((stat) => {
+    stats.forEach((stat: player_stats) => {
       summary.minutes += stat.minutes || 0;
       summary.total_points += stat.total_points || 0;
       summary.goals_scored += stat.goals_scored || 0;

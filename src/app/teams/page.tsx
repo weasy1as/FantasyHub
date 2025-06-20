@@ -2,9 +2,10 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { teams } from "@/generated/prisma";
 
 export default function TeamsPage() {
-  const [teams, setTeams] = useState([]);
+  const [teams, setTeams] = useState<teams[]>([]);
   const [selectedTeamId, setSelectedTeamId] = useState<number | null>(null);
   const [players, setPlayers] = useState([]);
   const Router = useRouter();

@@ -4,6 +4,23 @@ import React, { useState } from "react";
 import CompareCard from "@/components/compareCard";
 import PlayerSearch from "@/components/PlayerSearch";
 import { calculateSummaryStats } from "@/lib/playerStats";
+import { player_stats, players } from "@/generated/prisma";
+type SummaryStats = {
+  minutes: number;
+  total_points: number;
+  goals_scored: number;
+  assists: number;
+  clean_sheets: number;
+};
+
+type PlayerWithStats = {
+  player_id: number;
+  name: string;
+  position: string | null;
+  team: string | null;
+  element: number | null;
+  player_stats: player_stats[];
+};
 
 const getPlayer = async (id: string) => {
   const res = await fetch(
@@ -17,10 +34,10 @@ const getPlayer = async (id: string) => {
 };
 
 const fetchAIInsight = async (
-  player1,
-  player2,
-  summaryStats,
-  summaryStats2
+  player1: PlayerWithStats,
+  player2: PlayerWithStats,
+  summaryStats: SummaryStats,
+  summaryStats2: SummaryStats
 ) => {
   const res = await fetch("/api/getComparison", {
     method: "POST",
@@ -47,13 +64,16 @@ const ComparePage = () => {
   const [insight, setInsight] = useState<string | null>(null);
   const [loadingInsight, setLoadingInsight] = useState(false);
 
-  const handleSelectPlayer = async (player, slot: 1 | 2) => {
+  const handleSelectPlayer = async (
+    player: { player_id: number },
+    slot: 1 | 2
+  ) => {
     const setPlayer = slot === 1 ? setPlayer1 : setPlayer2;
     const setLoading = slot === 1 ? setLoading1 : setLoading2;
 
     setLoading(true);
     try {
-      const fullPlayer = await getPlayer(player.player_id);
+      const fullPlayer = await getPlayer(player.player_id.toString());
       setPlayer(fullPlayer);
     } catch (err) {
       console.error("Error loading player", err);

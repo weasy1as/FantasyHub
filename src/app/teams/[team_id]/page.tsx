@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import { players } from "@/generated/prisma";
 
 export default function TeamPage() {
   const { team_id } = useParams();
@@ -33,10 +34,10 @@ export default function TeamPage() {
         );
 
         const grouped = {
-          Goalkeepers: teamPlayers.filter((p) => p.position === "GK"),
-          Defenders: teamPlayers.filter((p) => p.position === "DEF"),
-          Midfielders: teamPlayers.filter((p) => p.position === "MID"),
-          Forwards: teamPlayers.filter((p) => p.position === "FWD"),
+          Goalkeepers: teamPlayers.filter((p: players) => p.position === "GK"),
+          Defenders: teamPlayers.filter((p: players) => p.position === "DEF"),
+          Midfielders: teamPlayers.filter((p: players) => p.position === "MID"),
+          Forwards: teamPlayers.filter((p: players) => p.position === "FWD"),
         };
 
         setGroupedPlayers(grouped);
