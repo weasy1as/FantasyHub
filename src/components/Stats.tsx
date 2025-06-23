@@ -21,7 +21,7 @@ const StatCard: React.FC<{
   player: StatItem;
   statLabel: string;
   statValue: number | undefined;
-}> = ({ player, statLabel, statValue }) => {
+}> = ({ player, statValue }) => {
   return (
     <div className="bg-white shadow-md rounded-lg p-6 hover:shadow-xl transition-shadow duration-300 flex justify-between items-center">
       <div>

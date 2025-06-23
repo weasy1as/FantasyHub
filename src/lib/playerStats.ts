@@ -1,3 +1,5 @@
+import { player_stats } from "../../generated/prisma";
+
 export type SummaryStats = {
   minutes: number;
   total_points: number;
@@ -22,4 +24,16 @@ export function calculateSummaryStats(stats: SummaryStats[]) {
       clean_sheets: 0,
     }
   );
+}
+
+export function normalizeStats(
+  stats: player_stats[] | undefined
+): SummaryStats[] {
+  return (stats ?? []).map((stat) => ({
+    minutes: stat.minutes ?? 0,
+    total_points: stat.total_points ?? 0,
+    goals_scored: stat.goals_scored ?? 0,
+    assists: stat.assists ?? 0,
+    clean_sheets: stat.clean_sheets ?? 0,
+  }));
 }

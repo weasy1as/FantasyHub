@@ -3,8 +3,8 @@
 import React, { useState } from "react";
 import CompareCard from "@/components/compareCard";
 import PlayerSearch from "@/components/PlayerSearch";
-import { calculateSummaryStats } from "@/lib/playerStats";
-import { player_stats, players } from "@/generated/prisma";
+import { calculateSummaryStats, normalizeStats } from "@/lib/playerStats";
+import { player_stats } from "../../../generated/prisma";
 type SummaryStats = {
   minutes: number;
   total_points: number;
@@ -57,8 +57,8 @@ const fetchAIInsight = async (
 };
 
 const ComparePage = () => {
-  const [player1, setPlayer1] = useState<any | null>(null);
-  const [player2, setPlayer2] = useState<any | null>(null);
+  const [player1, setPlayer1] = useState<PlayerWithStats | null>(null);
+  const [player2, setPlayer2] = useState<PlayerWithStats | null>(null);
   const [loading1, setLoading1] = useState(false);
   const [loading2, setLoading2] = useState(false);
   const [insight, setInsight] = useState<string | null>(null);
@@ -84,8 +84,12 @@ const ComparePage = () => {
   };
 
   const handleGetInsight = async () => {
-    const summaryStats = calculateSummaryStats(player1?.player_stats);
-    const summaryStats2 = calculateSummaryStats(player2?.player_stats);
+    const summaryStats = calculateSummaryStats(
+      normalizeStats(player1?.player_stats)
+    );
+    const summaryStats2 = calculateSummaryStats(
+      normalizeStats(player2?.player_stats)
+    );
     if (!player1 || !player2) return;
     setLoadingInsight(true);
     const result = await fetchAIInsight(

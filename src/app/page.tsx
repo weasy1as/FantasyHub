@@ -1,5 +1,6 @@
 import PlayerSearch from "@/components/PlayerSearch";
 import Stats from "@/components/Stats";
+import Image from "next/image";
 
 interface StatItem {
   player_id: number;
@@ -43,7 +44,9 @@ export default async function Home() {
           </p>
         </div>
         <div className="flex justify-center">
-          <img
+          <Image
+            height={330}
+            width={330}
             className="w-full max-w-md"
             src="https://fantasy.premierleague.com/static/media/player-comp-5-2x.d02a3f06.png"
             alt="FPL Player Graphic"

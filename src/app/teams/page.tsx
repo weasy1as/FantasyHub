@@ -2,12 +2,11 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { teams } from "@/generated/prisma";
+import { teams } from "../../../generated/prisma";
 
 export default function TeamsPage() {
   const [teams, setTeams] = useState<teams[]>([]);
-  const [selectedTeamId, setSelectedTeamId] = useState<number | null>(null);
-  const [players, setPlayers] = useState([]);
+
   const Router = useRouter();
 
   useEffect(() => {
@@ -36,7 +35,7 @@ export default function TeamsPage() {
         </h1>
 
         <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {teams.map((team: any) => (
+          {teams.map((team: teams) => (
             <div
               key={team.team_id}
               onClick={() => handleSelect(team.team_id)}
@@ -48,31 +47,6 @@ export default function TeamsPage() {
             </div>
           ))}
         </div>
-
-        {selectedTeamId && (
-          <section className="mt-12">
-            <h2 className="text-3xl font-bold mb-6 text-gray-800 text-center">
-              Players
-            </h2>
-            {players.length === 0 ? (
-              <p className="text-center text-gray-500">
-                No players found for this team.
-              </p>
-            ) : (
-              <ul className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
-                {players.map((player: any) => (
-                  <li
-                    key={player.id}
-                    className="bg-white p-4 rounded-lg border border-gray-200 shadow hover:shadow-md transition"
-                  >
-                    <p className="font-medium text-gray-800">{player.name}</p>
-                    <p className="text-sm text-gray-500">{player.position}</p>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </section>
-        )}
       </div>
     </main>
   );

@@ -9,9 +9,9 @@ const Navbar = () => {
 
   return (
     <nav className="p-4 flex justify-between items-center bg-gradient-to-r from-[#00ff87] to-[#02efff] relative">
-      <a href="/" aria-label="Homepage">
+      <Link href="/" aria-label="Homepage">
         <SiPremierleague size={40} />
-      </a>
+      </Link>
 
       <Link
         href="/"

@@ -1,9 +1,18 @@
-import { player_stats } from "@/generated/prisma";
+import { player_stats } from "../../generated/prisma";
 import React from "react";
 import { FaUserAlt } from "react-icons/fa";
 
+type PlayerWithStats = {
+  player_id: number;
+  name: string;
+  position: string | null;
+  team: string | null;
+  element: number | null;
+  player_stats: player_stats[];
+};
+
 interface PlayerPageProps {
-  player: any;
+  player: PlayerWithStats;
   insight: string | null;
   onGetInsight: () => void;
   loadingInsight: boolean;
@@ -116,7 +125,7 @@ const PlayerPage: React.FC<PlayerPageProps> = ({
           Match-by-Match Stats
         </h2>
         <div className="space-y-5 max-h-[600px] overflow-y-auto pr-1">
-          {playerStats.map((stat: any) => (
+          {playerStats.map((stat: player_stats) => (
             <div
               key={stat.stat_id}
               className="bg-white border rounded-xl shadow-sm p-4"
@@ -126,7 +135,11 @@ const PlayerPage: React.FC<PlayerPageProps> = ({
                   GW {stat.gw_id}
                 </h3>
                 <span className="text-sm text-gray-500">
-                  {new Date(stat.kickoff_time).toLocaleDateString()}
+                  {
+                    stat.kickoff_time
+                      ? new Date(stat.kickoff_time).toLocaleDateString()
+                      : "N/A" /* or any fallback text */
+                  }
                 </span>
               </div>
 

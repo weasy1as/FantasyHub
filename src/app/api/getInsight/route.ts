@@ -1,17 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
+import { player_stats } from "../../../../generated/prisma";
 
 export async function POST(req: NextRequest) {
   const { playerName, playerStats, statsOverall } = await req.json();
 
-  function formatStats(stats: any[]) {
+  function formatStats(stats: player_stats[]) {
     const sortedStats = [...stats].sort(
       (a, b) =>
-        new Date(a.kickoff_time).getTime() - new Date(b.kickoff_time).getTime()
+        new Date(a.kickoff_time!).getTime() -
+        new Date(b.kickoff_time!).getTime()
     );
 
     return sortedStats
       .slice(-5) // last 5 gameweeks
-      .map((s, i) => {
+      .map((s) => {
         return `Gameweek ${s.gw_id}:
         Minutes: ${s.minutes}, 
         Points: ${s.total_points}, 

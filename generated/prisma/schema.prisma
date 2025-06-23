@@ -1,0 +1,145 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model gameweeks {
+  gw_id        Int            @id @default(autoincrement())
+  season       String         @db.VarChar(9)
+  gw_number    Int
+  start_date   DateTime?      @db.Timestamp(6)
+  end_date     DateTime?      @db.Timestamp(6)
+  player_stats player_stats[]
+
+  @@unique([season, gw_number], map: "unique_season_gw")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model merged_gw_summary {
+  element            Int      @id @default(autoincrement())
+  name               String?
+  position           String?
+  team               String?
+  games_played       BigInt?
+  total_minutes      BigInt?
+  total_goals        BigInt?
+  total_assists      BigInt?
+  total_clean_sheets BigInt?
+  yellow_cards       BigInt?
+  red_cards          BigInt?
+  total_points       BigInt?
+  avg_value          Float?
+  avg_xp             Decimal? @db.Decimal
+  first_gw           Int?
+  last_gw            Int?
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model mergedgw {
+  name                       String?
+  element                    Int       @id @default(autoincrement())
+  position                   String?
+  team                       String?
+  xp                         Float?
+  assists                    Int?
+  bonus                      Int?
+  bps                        Int?
+  clean_sheets               Int?
+  creativity                 Float?
+  expected_assists           Float?
+  expected_goal_involvements Float?
+  expected_goals             Float?
+  expected_goals_conceded    Float?
+  fixture                    Int?
+  goals_conceded             Int?
+  goals_scored               Int?
+  ict_index                  Float?
+  influence                  Float?
+  kickoff_time               DateTime? @db.Timestamp(6)
+  minutes                    Int?
+  modified                   Boolean?
+  opponent_team              Int?
+  own_goals                  Int?
+  penalties_missed           Int?
+  penalties_saved            Int?
+  red_cards                  Int?
+  round                      Int?
+  saves                      Int?
+  selected                   Int?
+  starts                     Int?
+  team_a_score               Int?
+  team_h_score               Int?
+  threat                     Float?
+  total_points               Int?
+  transfers_balance          Int?
+  transfers_in               Int?
+  transfers_out              Int?
+  value                      Float?
+  was_home                   Boolean?
+  yellow_cards               Int?
+  gw                         Int?
+}
+
+model player_stats {
+  stat_id                    Int        @id @default(autoincrement())
+  player_id                  Int?
+  gw_id                      Int?
+  xp                         Float?
+  assists                    Int?
+  bonus                      Int?
+  bps                        Int?
+  clean_sheets               Int?
+  creativity                 Float?
+  expected_assists           Float?
+  expected_goal_involvements Float?
+  expected_goals             Float?
+  expected_goals_conceded    Float?
+  fixture                    Int?
+  goals_conceded             Int?
+  goals_scored               Int?
+  ict_index                  Float?
+  influence                  Float?
+  kickoff_time               DateTime?  @db.Timestamp(6)
+  minutes                    Int?
+  modified                   Boolean?
+  opponent_team              String?    @db.VarChar(50)
+  own_goals                  Int?
+  penalties_missed           Int?
+  penalties_saved            Int?
+  red_cards                  Int?
+  saves                      Int?
+  selected                   Int?
+  starts                     Int?
+  team_a_score               Int?
+  team_h_score               Int?
+  threat                     Float?
+  total_points               Int?
+  transfers_balance          Int?
+  transfers_in               Int?
+  transfers_out              Int?
+  value                      Float?
+  was_home                   Boolean?
+  yellow_cards               Int?
+  gameweeks                  gameweeks? @relation(fields: [gw_id], references: [gw_id], onDelete: NoAction, onUpdate: NoAction)
+  players                    players?   @relation(fields: [player_id], references: [player_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model players {
+  player_id    Int            @id @default(autoincrement())
+  name         String         @db.VarChar(100)
+  position     String?        @db.VarChar(10)
+  team         String?        @db.VarChar(50)
+  element      Int?           @unique
+  player_stats player_stats[]
+}
+
+model teams {
+  team_id      Int     @id @default(autoincrement())
+  name         String  @unique @db.VarChar(50)
+  abbreviation String? @db.VarChar(5)
+}

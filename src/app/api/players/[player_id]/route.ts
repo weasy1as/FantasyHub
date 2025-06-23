@@ -1,12 +1,12 @@
 // app/api/players/[player_id]/route.ts
+//import { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { NextRequest } from "next/server";
 
 export async function GET(
-  req: NextRequest,
-  context: { params: { player_id: string } }
+  request: Request,
+  { params }: { params: Promise<{ player_id: string }> }
 ) {
-  const { player_id } = await context.params;
+  const player_id = (await params).player_id;
   const id = Number(player_id);
 
   if (isNaN(id)) {

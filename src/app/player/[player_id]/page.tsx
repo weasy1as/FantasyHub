@@ -3,8 +3,8 @@
 import React, { useState, useEffect } from "react";
 import PlayerPage from "@/components/PlayerPage";
 import { useParams } from "next/navigation";
-import { calculateSummaryStats } from "@/lib/playerStats";
-import { player_stats } from "@/generated/prisma";
+import { calculateSummaryStats, normalizeStats } from "@/lib/playerStats";
+import { player_stats } from "../../../../generated/prisma";
 
 const getPlayer = async (id: string) => {
   const res = await fetch(
@@ -27,14 +27,17 @@ type PlayerWithStats = {
 };
 
 const PlayerStatsPage = () => {
-  const [player, setPlayer] = useState<any>(null);
+  const [player, setPlayer] = useState<PlayerWithStats | null>(null);
   const [loadingPlayer, setLoadingPlayer] = useState(true);
   const [insight, setInsight] = useState<string | null>(null);
   const [loadingInsight, setLoadingInsight] = useState(false);
   const params = useParams();
   const playerId = params?.player_id;
 
-  const summaryStats = calculateSummaryStats(player?.player_stats);
+  const summaryStats = player?.player_stats
+    ? calculateSummaryStats(normalizeStats(player.player_stats))
+    : null;
+
   const fetchAIInsight = async (player: PlayerWithStats) => {
     const res = await fetch("/api/getInsight", {
       method: "POST",

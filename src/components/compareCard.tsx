@@ -1,9 +1,18 @@
-import { player_stats } from "@/generated/prisma";
+import { player_stats } from "../../generated/prisma";
 import Link from "next/link";
 import React from "react";
 import { FaUserAlt } from "react-icons/fa";
 
-const compareCard = ({ player }: { player: any }) => {
+type PlayerWithStats = {
+  player_id: number;
+  name: string;
+  position: string | null;
+  team: string | null;
+  element: number | null;
+  player_stats: player_stats[];
+};
+
+const compareCard = ({ player }: { player: PlayerWithStats }) => {
   const playerStats = player.player_stats;
 
   const calculateSummaryStats = (stats: typeof player.player_stats) => {

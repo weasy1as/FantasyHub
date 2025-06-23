@@ -2,15 +2,15 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { players } from "@/generated/prisma";
+import { players, teams } from "../../../../generated/prisma";
 
 export default function TeamPage() {
   const { team_id } = useParams();
   const router = useRouter();
   const [teamName, setTeamName] = useState<string | null>(null);
-  const [groupedPlayers, setGroupedPlayers] = useState<Record<string, any[]>>(
-    {}
-  );
+  const [groupedPlayers, setGroupedPlayers] = useState<
+    Record<string, players[]>
+  >({});
 
   useEffect(() => {
     const fetchTeamAndPlayers = async () => {
@@ -19,7 +19,7 @@ export default function TeamPage() {
         const allTeams = await teamRes.json();
 
         const matchedTeam = allTeams.find(
-          (team: any) => team.team_id === parseInt(team_id as string)
+          (team: teams) => team.team_id === parseInt(team_id as string)
         );
 
         if (!matchedTeam) return;
@@ -30,7 +30,7 @@ export default function TeamPage() {
         const allPlayers = await playersRes.json();
 
         const teamPlayers = allPlayers.filter(
-          (p: any) => p.team === matchedTeam.name
+          (p: players) => p.team === matchedTeam.name
         );
 
         const grouped = {

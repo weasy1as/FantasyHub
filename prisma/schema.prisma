@@ -42,6 +42,7 @@ model merged_gw_summary {
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model mergedgw {
   name                       String?
+  element                    Int       @id @default(autoincrement())
   position                   String?
   team                       String?
   xp                         Float?
@@ -50,7 +51,6 @@ model mergedgw {
   bps                        Int?
   clean_sheets               Int?
   creativity                 Float?
-  element                    Int?
   expected_assists           Float?
   expected_goal_involvements Float?
   expected_goals             Float?
@@ -83,8 +83,6 @@ model mergedgw {
   was_home                   Boolean?
   yellow_cards               Int?
   gw                         Int?
-
-  @@ignore
 }
 
 model player_stats {

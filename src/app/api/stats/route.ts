@@ -1,21 +1,10 @@
 import { prisma } from "@/lib/prisma";
 
-function replaceBigIntWithString(obj: any): any {
-  if (typeof obj === "bigint") {
-    return obj.toString();
-  } else if (Array.isArray(obj)) {
-    return obj.map(replaceBigIntWithString);
-  } else if (obj !== null && typeof obj === "object") {
-    const newObj: any = {};
-    for (const key in obj) {
-      newObj[key] = replaceBigIntWithString(obj[key]);
-    }
-    return newObj;
+export async function GET() {
+  function replacer(key: string, value: unknown): unknown {
+    return typeof value === "bigint" ? value.toString() : value;
   }
-  return obj;
-}
 
-export async function GET(req: Request) {
   // Top 5 by assists
   const topAssists = await prisma.merged_gw_summary.findMany({
     orderBy: {
@@ -41,11 +30,14 @@ export async function GET(req: Request) {
   });
 
   return new Response(
-    JSON.stringify({
-      topAssists: replaceBigIntWithString(topAssists),
-      topGoals: replaceBigIntWithString(topGoals),
-      topCleanSheets: replaceBigIntWithString(topCleanSheets),
-    }),
+    JSON.stringify(
+      {
+        topAssists,
+        topGoals,
+        topCleanSheets,
+      },
+      replacer
+    ),
     {
       headers: { "Content-Type": "application/json" },
     }

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { player_stats } from "../../../../generated/prisma";
 
 export async function POST(req: NextRequest) {
   const {
@@ -21,10 +22,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Missing player data" }, { status: 400 });
   }
 
-  function formatStats(stats: any[]) {
+  function formatStats(stats: player_stats[]) {
     return stats
       .slice(-5) // last 5 gameweeks
-      .map((s, i) => {
+      .map((s) => {
         return `Gameweek ${s.gw_id}:
         Minutes: ${s.minutes}, 
         Points: ${s.total_points}, 
