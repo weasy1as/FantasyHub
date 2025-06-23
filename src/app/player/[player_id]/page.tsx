@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import PlayerPage from "@/components/PlayerPage";
 import { useParams } from "next/navigation";
 import { calculateSummaryStats, normalizeStats } from "@/lib/playerStats";
-import { player_stats } from "../../../../generated/prisma";
+import { player_stats } from "../../../../prisma/generated/prisma";
 
 const getPlayer = async (id: string) => {
   const res = await fetch(

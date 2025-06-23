@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import CompareCard from "@/components/compareCard";
 import PlayerSearch from "@/components/PlayerSearch";
 import { calculateSummaryStats, normalizeStats } from "@/lib/playerStats";
-import { player_stats } from "../../../generated/prisma";
+import { player_stats } from "../../../prisma/generated/prisma";
 type SummaryStats = {
   minutes: number;
   total_points: number;

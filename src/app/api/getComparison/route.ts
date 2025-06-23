@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { player_stats } from "../../../../generated/prisma";
+import { player_stats } from "../../../../prisma/generated/prisma";
 
 export async function POST(req: NextRequest) {
   const {

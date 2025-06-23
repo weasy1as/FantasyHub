@@ -1,4 +1,4 @@
-import { player_stats } from "../../generated/prisma";
+import { player_stats } from "../../prisma/generated/prisma";
 
 export type SummaryStats = {
   minutes: number;

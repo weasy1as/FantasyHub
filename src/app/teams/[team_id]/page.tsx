@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { players, teams } from "../../../../generated/prisma";
+import { players, teams } from "../../../../prisma/generated/prisma";
 
 export default function TeamPage() {
   const { team_id } = useParams();

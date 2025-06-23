@@ -1,4 +1,4 @@
-import { player_stats } from "../../generated/prisma";
+import { player_stats } from "../../prisma/generated/prisma";
 import Link from "next/link";
 import React from "react";
 import { FaUserAlt } from "react-icons/fa";

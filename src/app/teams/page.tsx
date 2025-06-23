@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { teams } from "../../../generated/prisma";
+import { teams } from "../../../prisma/generated/prisma";
 
 export default function TeamsPage() {
   const [teams, setTeams] = useState<teams[]>([]);
