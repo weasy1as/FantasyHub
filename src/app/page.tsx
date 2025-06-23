@@ -1,6 +1,7 @@
 import PlayerSearch from "@/components/PlayerSearch";
 import Stats from "@/components/Stats";
 import Image from "next/image";
+import { SiPremierleague } from "react-icons/si";
 
 interface StatItem {
   player_id: number;
@@ -28,9 +29,12 @@ export default async function Home() {
   const { topAssists, topGoals, topCleanSheets } = await getStatsData();
 
   return (
-    <main className="bg-gray-50 min-h-screen">
+    <main className="min-h-screen">
       {/* Hero Section */}
-      <section className="grid grid-cols-1 md:grid-cols-2 gap-8 p-8 items-center bg-gradient-to-br from-blue-50 to-white">
+      <section className="grid grid-cols-1 md:grid-cols-2 gap-8 p-8 items-center">
+        <div className="flex justify-center">
+          <SiPremierleague size={140} />
+        </div>
         <div className="space-y-4">
           <h1 className="text-4xl font-extrabold text-gray-800 leading-snug">
             Level up your fantasy team with{" "}
@@ -42,15 +46,6 @@ export default async function Home() {
           <p className="text-md text-gray-500">
             Your Ultimate FPL Analytics Hub
           </p>
-        </div>
-        <div className="flex justify-center">
-          <Image
-            height={330}
-            width={330}
-            className="w-full max-w-md"
-            src="https://fantasy.premierleague.com/static/media/player-comp-5-2x.d02a3f06.png"
-            alt="FPL Player Graphic"
-          />
         </div>
       </section>
 
@@ -65,7 +60,7 @@ export default async function Home() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-12 bg-gray-100 px-4">
+      <section className="py-12 bg-gradient-to-br from-blue-50 to-white px-4">
         <div className="max-w-7xl mx-auto">
           <Stats
             topAssists={topAssists}
