@@ -1,6 +1,5 @@
 import PlayerSearch from "@/components/PlayerSearch";
 import Stats from "@/components/Stats";
-import Image from "next/image";
 import { SiPremierleague } from "react-icons/si";
 
 interface StatItem {
