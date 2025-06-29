@@ -40,9 +40,7 @@ const compareCard = ({ player }: { player: PlayerWithStats }) => {
   return (
     <div className="flex items-center lg:flex-row flex-col justify-center gap-6 py-9 lg:py-6 px-6 bg-white">
       <div>
-        <h1 className="text-2xl text-center font-bold mb-4 text-white">
-          Player
-        </h1>
+        <h1 className="text-2xl text-center font-bold mb-4">Player</h1>
 
         <div className="bg-white shadow-md rounded-2xl p-4 border max-w-sm">
           <div className="flex items-center gap-4 mb-4">
