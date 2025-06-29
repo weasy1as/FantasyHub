@@ -113,7 +113,7 @@ const ComparePage = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-10 space-y-10">
+    <div className="max-w-7xl mx-auto px-4 py-10 space-y-10 bg-white">
       <h1 className="text-3xl font-bold text-center">Compare Players</h1>
 
       <div className="grid sm:grid-cols-2 gap-8">
