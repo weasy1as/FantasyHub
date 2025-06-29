@@ -39,6 +39,13 @@ const PlayerStatsPage = () => {
     : null;
 
   const fetchAIInsight = async (player: PlayerWithStats) => {
+    const cacheKey = `openai_response_${playerId}`;
+    const cached = localStorage.getItem(cacheKey);
+    if (cached) {
+      console.log(`Using cached response for player ${playerId}:`, cached);
+      return cached;
+    }
+
     const res = await fetch("/api/getInsight", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -50,6 +57,8 @@ const PlayerStatsPage = () => {
     });
 
     const data = await res.json();
+    console.log(data);
+    localStorage.setItem(cacheKey, data.insight);
     return data.insight;
   };
 

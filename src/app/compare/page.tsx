@@ -39,6 +39,14 @@ const fetchAIInsight = async (
   summaryStats: SummaryStats,
   summaryStats2: SummaryStats
 ) => {
+  const [id1, id2] = [player1.player_id, player2.player_id].sort();
+  const cacheKey = `compare:${id1}:${id2}`;
+  const cached = localStorage.getItem(cacheKey);
+
+  if (cached) {
+    console.log("using cached data");
+    return cached;
+  }
   const res = await fetch("/api/getComparison", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -53,6 +61,7 @@ const fetchAIInsight = async (
   });
 
   const data = await res.json();
+  localStorage.setItem(cacheKey, data.insight);
   return data.insight;
 };
 
@@ -80,6 +89,7 @@ const ComparePage = () => {
       setPlayer(null);
     } finally {
       setLoading(false);
+      setInsight(null);
     }
   };
 
