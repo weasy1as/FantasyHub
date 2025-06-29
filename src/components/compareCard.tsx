@@ -38,7 +38,7 @@ const compareCard = ({ player }: { player: PlayerWithStats }) => {
   const summaryStats = calculateSummaryStats(playerStats);
 
   return (
-    <div className="flex items-center lg:flex-row flex-col justify-center gap-6 py-9 lg:py-6 px-6  ">
+    <div className="flex items-center lg:flex-row flex-col justify-center gap-6 py-9 lg:py-6 px-6 bg-white">
       <div>
         <h1 className="text-2xl text-center font-bold mb-4">Player</h1>
 

@@ -56,7 +56,7 @@ const PlayerPage: React.FC<PlayerPageProps> = ({
   const summaryStats = calculateSummaryStats(playerStats);
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-10 grid gap-10 lg:grid-cols-2">
+    <div className="max-w-7xl mx-auto px-6 py-10 grid gap-10 lg:grid-cols-2 bg-white">
       {/* Player Info & Insight */}
       <div>
         <h1 className="text-3xl font-bold text-indigo-700 mb-6">

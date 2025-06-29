@@ -28,7 +28,7 @@ export default async function Home() {
   const { topAssists, topGoals, topCleanSheets } = await getStatsData();
 
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen bg-white">
       {/* Hero Section */}
       <section className="grid grid-cols-1 md:grid-cols-2 gap-8 p-8 items-center">
         <div className="flex justify-center">
